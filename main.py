@@ -81,7 +81,7 @@ def chat_with_db(chat_input: ChatInput, db: Session = Depends(get_db)):
         .all()
     )
     messages.reverse()  # oldest to newest
-
+#making changes
     # 3. Build the prompt
     prompt = ""
     for msg in messages:
