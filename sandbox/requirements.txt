@@ -4,11 +4,16 @@ scikit-learn
 matplotlib
 seaborn
 fpdf
-ollama
+
+# LangChain Core
 langchain
 langchain-core
 langchain-community
-langchain-ollama
+
+# Hugging Face integration
 huggingface_hub
-langchain-huggingface_hub
 langchain-huggingface
+
+# Ollama support (if used locally)
+ollama
+langchain-ollama
