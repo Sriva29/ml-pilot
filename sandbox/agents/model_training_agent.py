@@ -4,6 +4,7 @@ from sklearn.linear_model import LogisticRegression, LinearRegression
 from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
 from sklearn.metrics import accuracy_score, f1_score, mean_squared_error, r2_score
 from typing import Tuple, Dict, Any
+import numpy as np
 
 class ModelTrainerAgent:
     def __init__(self):
@@ -36,7 +37,7 @@ class ModelTrainerAgent:
             }
         else:
             metrics = {
-                "RMSE": mean_squared_error(y_test, y_pred, squared=False),
+                "RMSE": np.sqrt(mean_squared_error(y_test, y_pred)),
                 "R^2 Score": r2_score(y_test, y_pred)
             }
 
