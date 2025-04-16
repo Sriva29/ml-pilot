@@ -30,6 +30,7 @@ if "dataset" not in st.session_state:
     st.session_state["dataset"] = None
 if "preprocessed" not in st.session_state:
     st.session_state["preprocessed"] = False
+os.environ["HUGGINGFACEHUB_API_TOKEN"] = st.secrets["HUGGINGFACEHUB_API_TOKEN"]
 
 # --- Upload dataset ---
 st.write("### Step 1: Upload your dataset (CSV only)")
