@@ -45,7 +45,7 @@ class ChatAgent:
             raise RuntimeError("Missing Hugging Face API token")
 
         self.llm = HuggingFaceHub(
-            repo_id="google/flan-t5-small",
+            repo_id="tiiuae/falcon-rw-1b",
             model_kwargs={"temperature": 0.7, "max_new_tokens": 256}
         )
 
