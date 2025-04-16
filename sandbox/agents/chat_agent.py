@@ -43,13 +43,22 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 
 
-# Use secret from Streamlit Cloud or fallback to manual
-HUGGINGFACE_KEY = st.secrets.get("HUGGINGFACEHUB_API_TOKEN", "your_token_here")
-os.environ["HUGGINGFACEHUB_API_TOKEN"] = HUGGINGFACE_KEY
+import os
+import streamlit as st
+from langchain.llms import HuggingFaceHub
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.output_parsers import StrOutputParser
+
+# Load token from secrets or environment (already set in app.py)
+HUGGINGFACE_TOKEN = os.environ.get("HUGGINGFACEHUB_API_TOKEN", None)
+
+if not HUGGINGFACE_TOKEN:
+    st.error("❌ Hugging Face API token not found. Please enter it in the app.")
+    raise RuntimeError("Missing Hugging Face API token")
 
 # Initialize the LLM
 llm = HuggingFaceHub(
-    repo_id="EPFL-VILAB/4M-21_B",
+    repo_id="google/flan-t5-base",
     model_kwargs={"temperature": 0.5, "max_length": 512}
 )
 
