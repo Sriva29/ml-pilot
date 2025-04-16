@@ -42,7 +42,7 @@ from langchain.llms import HuggingFaceHub
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 
-
+import re
 import os
 import streamlit as st
 from langchain.llms import HuggingFaceHub
@@ -79,14 +79,20 @@ class ChatAgent:
         return chain.invoke({"history": history})
 
     def inspect_dataset(self, df):
-        """Suggest target column and task type"""
-        columns = ", ".join(df.columns)
-        text = f"The dataset has the following columns: {columns}. What column is most likely the target for machine learning?"
-        response = llm.invoke(text)
+        # Your LLM call
+        text = f"You’re a helpful assistant. A user uploaded a dataset with these columns: {', '.join(df.columns)}. Which column is most likely the target for ML? Reply with just the column name and reason."
+        response = self.llm.invoke(text).strip()
 
-        target = response.strip().split()[0]
+        # Try to extract column name using regex
+        pattern = re.compile(r"[`'\"]?(\b(?:%s)\b)[`'\"]?" % "|".join(re.escape(col) for col in df.columns))
+        match = pattern.search(response)
+        if not match:
+            raise ValueError("Could not determine target column from LLM response: " + response)
+
+        target = match.group(1)
         task_type = "classification" if df[target].nunique() <= 10 else "regression"
-        message = f"I suggest using `{target}` as the target for a **{task_type}** task."
+        message = f"I suggest using `{target}` as the target for a **{task_type}** task.\n\nLLM response:\n> {response}"
+
         return message, target, task_type
 
 
