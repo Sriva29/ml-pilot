@@ -1,0 +1,37 @@
+# Ignore Python cache and compiled files
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Ignore virtual environment
+venv/
+env/
+
+# Ignore Jupyter/IPython notebooks checkpoint files
+.ipynb_checkpoints/
+
+# Ignore Streamlit secrets and local config
+.streamlit/secrets.toml
+
+# Ignore OS junk
+.DS_Store
+Thumbs.db
+
+# Ignore model files or binaries
+*.pkl
+*.h5
+*.joblib
+
+# Ignore temporary or test files
+*.log
+*.tmp
+*.bak
+
+# Ignore PDF and report outputs
+*.pdf
+
+# Optional: if using VS Code
+.vscode/
+
+# Optional: if you use JetBrains IDEs
+.idea/
