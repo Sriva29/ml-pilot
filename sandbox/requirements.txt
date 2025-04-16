@@ -9,3 +9,4 @@ langchain
 langchain-core
 langchain-community
 langchain-ollama
+huggingface_hub

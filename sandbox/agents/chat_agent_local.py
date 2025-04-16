@@ -38,48 +38,35 @@ import pandas as pd
 from utils.data_helpers import guess_target_column, detect_task_type
 
 
-from langchain.llms import HuggingFaceHub
-from langchain_core.prompts import ChatPromptTemplate
-from langchain_core.output_parsers import StrOutputParser
-
-
-# Use secret from Streamlit Cloud or fallback to manual
-HUGGINGFACE_KEY = st.secrets.get("HUGGINGFACEHUB_API_TOKEN", "your_token_here")
-os.environ["HUGGINGFACEHUB_API_TOKEN"] = HUGGINGFACE_KEY
-
-# Initialize the LLM
-llm = HuggingFaceHub(
-    repo_id="google/flan-t5-base",
-    model_kwargs={"temperature": 0.5, "max_length": 512}
-)
-
 class ChatAgent:
-    def __init__(self):
-        self.prompt = ChatPromptTemplate.from_template("""
-        You are a helpful data science assistant.
-        A user is trying to build a machine learning model.
-        Ask clarifying questions if needed, and once enough info is gathered, summarize it.
+    def __init__(self, endpoint="http://localhost:11434/api/generate", model="llama2"):
+        self.endpoint = endpoint
+        self.model = model
+        self.ensure_llama_running()
 
-        Current conversation:
-        {history}
-        """)
-        self.output_parser = StrOutputParser()
+    def ensure_llama_running(self):
+        try:
+            result = subprocess.run(["ollama", "ps"], capture_output=True, text=True)
+            if self.model not in result.stdout:
+                st.warning(f"Starting {self.model} with ollama...")
+                subprocess.Popen(["ollama", "run", self.model])
+            else:
+                st.info(f"{self.model} already running.")
+        except FileNotFoundError:
+            st.error("Ollama is not installed or not in PATH.")
 
-    def ask(self, history):
-        chain = self.prompt | llm | self.output_parser
-        return chain.invoke({"history": history})
+    def inspect_dataset(self, df: pd.DataFrame) -> Tuple[str, str, str]:
+        message = f"The dataset has {df.shape[0]} rows and {df.shape[1]} columns.\n"
+        message += "Here are some column names: " + ", ".join(df.columns[:5]) + "...\n"
 
-    def inspect_dataset(self, df):
-        """Suggest target column and task type"""
-        columns = ", ".join(df.columns)
-        text = f"The dataset has the following columns: {columns}. What column is most likely the target for machine learning?"
-        response = llm.invoke(text)
+        target = guess_target_column(df)
+        task = detect_task_type(df, target)
 
-        target = response.strip().split()[0]
-        task_type = "classification" if df[target].nunique() <= 10 else "regression"
-        message = f"I suggest using `{target}` as the target for a **{task_type}** task."
-        return message, target, task_type
+        message += f"\nI suggest using '{target}' as the target column.\n"
+        message += f"Based on the values in that column, this looks like a **{task}** task.\n"
+        message += "Shall we begin with preprocessing?"
 
+        return message, target, task
 
 
     def converse(self, conversation_history: List[Dict]) -> Tuple[str, Dict]:
