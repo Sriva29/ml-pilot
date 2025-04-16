@@ -49,7 +49,7 @@ os.environ["HUGGINGFACEHUB_API_TOKEN"] = HUGGINGFACE_KEY
 
 # Initialize the LLM
 llm = HuggingFaceHub(
-    repo_id="google/flan-t5-base",
+    repo_id="EPFL-VILAB/4M-21_B",
     model_kwargs={"temperature": 0.5, "max_length": 512}
 )
 
