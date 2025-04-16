@@ -10,3 +10,5 @@ langchain-core
 langchain-community
 langchain-ollama
 huggingface_hub
+langchain-huggingface_hub
+langchain-huggingface

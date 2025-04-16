@@ -33,7 +33,7 @@ from typing import List, Tuple, Dict
 
 from utils.data_helpers import guess_target_column, detect_task_type
 
-from langchain_community.llms import HuggingFaceHub
+from langchain_huggingface import HuggingFaceEndpoint
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 
@@ -44,8 +44,9 @@ class ChatAgent:
             st.error("❌ Hugging Face API token not found. Please add it to your secrets.")
             raise RuntimeError("Missing Hugging Face API token")
 
-        self.llm = HuggingFaceHub(
+        self.llm = HuggingFaceEndpoint(
             repo_id="tiiuae/falcon-rw-1b",
+            task="text2text-generation",
             model_kwargs={"temperature": 0.7, "max_new_tokens": 256}
         )
 
