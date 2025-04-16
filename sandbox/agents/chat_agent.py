@@ -47,7 +47,8 @@ class ChatAgent:
         self.llm = HuggingFaceEndpoint(
             repo_id="tiiuae/falcon-rw-1b",
             task="text2text-generation",
-            model_kwargs={"temperature": 0.7, "max_new_tokens": 256}
+            temperature=0.7,
+            max_new_tokens=256
         )
 
         self.prompt = ChatPromptTemplate.from_template("""
