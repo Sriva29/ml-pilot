@@ -58,7 +58,7 @@ if not HUGGINGFACE_TOKEN:
 
 # Initialize the LLM
 llm = HuggingFaceHub(
-    repo_id="CohereLabs/aya-101",
+    repo_id="tiiuae/falcon-rw-1b",
     model_kwargs={"temperature": 0.7, "max_new_tokens": 256}
 )
 
