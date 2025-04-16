@@ -7,7 +7,7 @@ from agents.hyperparameter_agent import HyperparameterTunerAgent
 from agents.evaluation_agent import EvaluationAgent
 from utils.data_helpers import detect_task_type
 from utils.export_helpers import generate_pdf_summary
-import pickle
+import pickle, os
 
 
 
@@ -30,7 +30,16 @@ if "dataset" not in st.session_state:
     st.session_state["dataset"] = None
 if "preprocessed" not in st.session_state:
     st.session_state["preprocessed"] = False
-os.environ["HUGGINGFACEHUB_API_TOKEN"] = st.secrets["HUGGINGFACEHUB_API_TOKEN"]
+
+# API Key Input (only shown if secret is missing)
+if "HUGGINGFACEHUB_API_TOKEN" not in st.secrets:
+    st.warning("🔐 Please enter your Hugging Face API token to use the LLM features.")
+    hf_token = st.text_input("Hugging Face API Token", type="password")
+    if hf_token:
+        os.environ["HUGGINGFACEHUB_API_TOKEN"] = hf_token
+        st.success("🔑 Token set successfully!")
+else:
+    os.environ["HUGGINGFACEHUB_API_TOKEN"] = st.secrets["HUGGINGFACEHUB_API_TOKEN"]
 
 # --- Upload dataset ---
 st.write("### Step 1: Upload your dataset (CSV only)")
