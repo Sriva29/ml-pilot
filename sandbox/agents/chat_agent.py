@@ -46,7 +46,7 @@ class ChatAgent:
 
         self.llm = HuggingFaceEndpoint(
             repo_id="tiiuae/falcon-rw-1b",
-            task="text2text-generation",
+            task="text-generation",
             temperature=0.7,
             max_new_tokens=256
         )
