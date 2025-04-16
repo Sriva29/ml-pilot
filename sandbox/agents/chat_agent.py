@@ -58,8 +58,8 @@ if not HUGGINGFACE_TOKEN:
 
 # Initialize the LLM
 llm = HuggingFaceHub(
-    repo_id="google/flan-t5-base",
-    model_kwargs={"temperature": 0.5, "max_length": 512}
+    repo_id="tiiuae/falcon-7b-instruct",
+    model_kwargs={"temperature": 0.7, "max_new_tokens": 256}
 )
 
 class ChatAgent:
