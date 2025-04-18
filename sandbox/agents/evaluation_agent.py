@@ -9,6 +9,7 @@ import pandas as pd
 import io
 import base64
 from sklearn.preprocessing import label_binarize
+from math import sqrt
 
 class EvaluationAgent:
     def __init__(self):
@@ -46,7 +47,7 @@ class EvaluationAgent:
                 visuals["roc_curve"] = roc
 
         else:  # Regression
-            results["RMSE"] = mean_squared_error(y, y_pred, squared=False)
+            results["RMSE"] = sqrt(mean_squared_error(y, y_pred))
             results["R^2 Score"] = r2_score(y, y_pred)
 
         return results, visuals
