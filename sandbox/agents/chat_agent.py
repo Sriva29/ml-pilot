@@ -70,7 +70,7 @@ class ChatAgent:
     def inspect_dataset(self, df):
         """Suggest target column and task type"""
         columns = ", ".join(df.columns)
-        text = f"The dataset has the following columns: {columns}. What column is most likely the target for machine learning?"
+        text = f"The dataset has the following columns: {columns}. What column is most likely the target for machine learning? Return the column name only. No other text."
         response = self.llm.invoke(text)
 
         target = response.strip().split()[0]
