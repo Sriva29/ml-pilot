@@ -11,8 +11,8 @@ import pickle, os
 
 
 
-st.set_page_config(page_title="Data Science Assistant", layout="centered")
-st.title("🤖 Multi-Agent Data Science Assistant")
+st.set_page_config(page_title="🧑🏽‍🏫 ML Prof", layout="centered")
+st.title("🤖 ML Simulator/Teacher")
 
 # --- Initialize agents ---
 chat_agent = ChatAgent()
@@ -170,14 +170,14 @@ if st.session_state.get("model_trained"):
         st.session_state["trained_model"]
     ))
 
-# --- Evaluation Plots ---
-if st.session_state.get("evaluation_results"):
-    st.markdown("### 📈 Detailed Evaluation")
-    for metric, value in st.session_state["evaluation_results"].items():
-        if isinstance(value, float):
-            st.write(f"**{metric}:** {value:.4f}")
-        else:
-            st.write(f"**{metric}:** {value}")
+# # --- Evaluation Plots ---
+# if st.session_state.get("evaluation_results"):
+#     st.markdown("### 📈 Detailed Evaluation")
+#     for metric, value in st.session_state["evaluation_results"].items():
+#         if isinstance(value, float):
+#             st.write(f"**{metric}:** {value:.4f}")
+#         else:
+#             st.write(f"**{metric}:** {value}")
 
 if st.session_state.get("evaluation_plots"):
     for title, base64_image in st.session_state["evaluation_plots"].items():
@@ -217,13 +217,13 @@ if st.session_state.get("model_tuned"):
     )
     st.session_state["tuned_evaluation_results"] = results
     st.session_state["tuned_evaluation_plots"] = visuals
-    if st.session_state.get("tuned_evaluation_results"):
-        st.markdown("### 📈 Detailed Evaluation (Tuned Model)")
-        for metric, value in st.session_state["tuned_evaluation_results"].items():
-            if isinstance(value, float):
-                st.write(f"**{metric}:** {value:.4f}")
-            else:
-                st.write(f"**{metric}:** {value}")
+    # if st.session_state.get("tuned_evaluation_results"):
+    #     st.markdown("### 📈 Detailed Evaluation (Tuned Model)")
+    #     for metric, value in st.session_state["tuned_evaluation_results"].items():
+    #         if isinstance(value, float):
+    #             st.write(f"**{metric}:** {value:.4f}")
+    #         else:
+    #             st.write(f"**{metric}:** {value}")
 
     if st.session_state.get("tuned_evaluation_plots"):
         for title, base64_image in st.session_state["tuned_evaluation_plots"].items():
