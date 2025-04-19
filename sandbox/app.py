@@ -13,7 +13,9 @@ import pickle, os
 
 st.set_page_config(page_title="🧑🏽‍🏫 ML Prof", layout="centered")
 st.title("🤖 ML Simulator/Teacher")
-
+st.subheader("You just want to build a model?")
+st.write("No problem! I can help you with that.")
+st.write("Upload your dataset, and I'll help you preprocess, train, and evaluate a machine learning model.")
 # --- Initialize agents ---
 chat_agent = ChatAgent()
 preprocessing_agent = PreprocessingAgent()
@@ -208,7 +210,7 @@ if st.session_state.get("model_tuned"):
         if key == "Best Params":
             st.write(f"**Best Parameters:** `{value}`")
         else:
-            st.write(f"**{key}:** {value:.4f}")
+            st.write(f"**{key}:** {value:.4f}" if isinstance(value, float) else f"**{key}:** {value}")
     # Re-evaluate the tuned model
     results, visuals = evaluation_agent.evaluate(
         st.session_state["tuned_model"],
