@@ -52,12 +52,19 @@ if uploaded_file and st.session_state["dataset"] is None:
     st.session_state["dataset"] = df
     st.success("✅ Dataset uploaded!")
 
-    message, target, task = chat_agent.inspect_dataset(df)
-    st.session_state["conversation_history"].append({"role": "assistant", "content": message})
-    st.session_state["suggested_target"] = target
-    st.session_state["suggested_task"] = task
-    st.session_state["show_suggestion"] = True
-    st.session_state["confirmed_target_task"] = False
+    try:
+        message, target, task = chat_agent.inspect_dataset(df)
+        st.session_state["conversation_history"].append({"role": "assistant", "content": message})
+        st.session_state["suggested_target"] = target
+        st.session_state["suggested_task"] = task
+        st.session_state["show_suggestion"] = True
+        st.session_state["confirmed_target_task"] = False
+    except Exception as e:
+        st.error("🚨 Oops! Something went wrong while analyzing the dataset. It could be due to a HuggingFace server issue or your internet connection.")
+        st.code(str(e), language='bash')
+        if st.button("🔄 Reload App"):
+            st.experimental_rerun()
+
 
 # --- Suggest target column and task ---
 if st.session_state.get("show_suggestion") and not st.session_state.get("confirmed_target_task"):
